@@ -19,7 +19,8 @@ add_executable(PWM_LED_Controller
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(PWM_LED_Controller
 pico_stdlib
-pico_cyw43_arch_none)
+pico_cyw43_arch_none
+hardware_pwm)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(PWM_LED_Controller)
