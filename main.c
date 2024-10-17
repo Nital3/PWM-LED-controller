@@ -25,7 +25,7 @@ int main(){
     pwm_set_enabled(slice_number, true);
 
     //Set the PWM wrap point for 2kHz
-    int pwm_wrap_point = 65000;
+    int pwm_wrap_point = 62500;
     pwm_set_wrap(slice_number, pwm_wrap_point);
 
     
