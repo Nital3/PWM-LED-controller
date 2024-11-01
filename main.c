@@ -7,6 +7,7 @@
 #define GPIO_OFF 0
 #define PWM_GPIO_PIN 0
 
+#define DIVIDER 10
 
 int main(){
 
@@ -30,27 +31,18 @@ int main(){
 
     
     int set_point = 0;
-    float brightness_percentage = 0;
-
+    int counter = 0;
 
     for(;;){
 
         //set the set point
-        pwm_set_chan_level(slice_number, PWM_CHAN_A, (pwm_wrap_point*brightness_percentage));
+        pwm_set_chan_level(slice_number, PWM_CHAN_A, ((pwm_wrap_point*counter)/DIVIDER));
         sleep_ms(1000);
 
-        for(;;){
+	counter++;
 
-            brightness_percentage += 0.1;
-
-            if (brightness_percentage>1){
-
-                brightness_percentage = 0;
-
-            }
-
-        }
-
+	if(counter > DIVIDER)
+		counter = 0;
     }
 
 }
