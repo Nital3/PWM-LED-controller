@@ -5,7 +5,8 @@
 
 #define GPIO_ON 1
 #define GPIO_OFF 0
-#define PWM_GPIO_PIN 0
+#define PWM_GPIO_PIN 14
+#define BUTTON_GPIO_PIN 15
 
 #define DIVIDER 10
 
@@ -16,10 +17,10 @@ int main(){
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, GPIO_ON);
 
 
-    //Set GPIO 0 pin to PWM mode
+    //Set GPIO 14 pin to PWM mode
     gpio_set_function(PWM_GPIO_PIN, GPIO_FUNC_PWM);
 
-    //Get PWM chanell for that pin;
+    //Get PWM channel for that pin;
     uint slice_number = pwm_gpio_to_slice_num(PWM_GPIO_PIN);
 
     //Turn PWM on
@@ -28,6 +29,13 @@ int main(){
     //Set the PWM wrap point for 2kHz
     int pwm_wrap_point = 62500;
     pwm_set_wrap(slice_number, pwm_wrap_point);
+
+
+    //Mode_button setup
+    stdio_init_all();
+    gpio_init(BUTTON_GPIO_PIN);
+    gpio_set_dir(BUTTON_GPIO_PIN, GPIO_IN);
+    gpio_pull_up(BUTTON_GPIO_PIN);
 
     
     int set_point = 0;
