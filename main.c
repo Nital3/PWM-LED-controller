@@ -43,14 +43,20 @@ int main(){
 
     for(;;){
 
-        //set the set point
-        pwm_set_chan_level(slice_number, PWM_CHAN_A, ((pwm_wrap_point*counter)/DIVIDER));
-        sleep_ms(1000);
+        //test button functionality
+        if(!gpio_get(BUTTON_GPIO_PIN)){
 
-	    counter++;
+            //when button pressed: set brightness of LED to 100%
+            pwm_set_chan_level(slice_number, PWM_CHAN_A, pwm_wrap_point);
 
-	    if(counter > DIVIDER)
-		counter = 0;
+        }
+        else{
+            
+            //if button isnt pressed then set brightness to 0%
+            pwm_set_chan_level(slice_number, PWM_CHAN_A, 0);
+
+        }
+        sleep_ms(10);
     }
 
 }
