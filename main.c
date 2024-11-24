@@ -47,9 +47,9 @@ int main(){
         pwm_set_chan_level(slice_number, PWM_CHAN_A, ((pwm_wrap_point*counter)/DIVIDER));
         sleep_ms(1000);
 
-	counter++;
+	    counter++;
 
-	if(counter > DIVIDER)
+	    if(counter > DIVIDER)
 		counter = 0;
     }
 
