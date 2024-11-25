@@ -28,6 +28,7 @@ pico_sdk_init()
 
 add_executable(PWM_LED_Controller
     main.c
+    modes.c
 )
 
 # Add pico_stdlib library which aggregates commonly used features

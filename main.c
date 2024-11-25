@@ -1,6 +1,7 @@
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 #include "hardware/pwm.h"
+#include "modes.h"
 
 
 #define GPIO_ON 1
@@ -37,20 +38,48 @@ int main(){
     gpio_set_dir(BUTTON_GPIO_PIN, GPIO_IN);
     gpio_pull_up(BUTTON_GPIO_PIN);
 
-    
-    int set_point = 0;
-    int counter = 0;
+    int mode = 0;
 
     for(;;){
 
-        //set the set point
-        pwm_set_chan_level(slice_number, PWM_CHAN_A, ((pwm_wrap_point*counter)/DIVIDER));
-        sleep_ms(1000);
+        while (gpio_get(BUTTON_GPIO_PIN)){
 
-	    counter++;
+            switch (mode){
 
-	    if(counter > DIVIDER)
-		counter = 0;
+            case 0: //Brightness 0%
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, fixed_brightness(0, pwm_wrap_point));
+                break;
+
+            case 1: //Brightness 25%
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, fixed_brightness(25, pwm_wrap_point));
+                break;
+
+            case 2: //Brightness 50%
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, fixed_brightness(50, pwm_wrap_point));
+                break;
+
+            case 3: //Brightness 100%
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, fixed_brightness(100, pwm_wrap_point));
+                break;
+            
+            default:
+                break;
+
+                sleep_ms(10);
+            }
+
+        }
+        
+        if(mode<3){
+            mode++;
+        }
+        else{
+            mode = 0;
+        }
+
+        sleep_ms(250);
+
+
     }
 
 }
