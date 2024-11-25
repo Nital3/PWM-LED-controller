@@ -42,6 +42,9 @@ int main(){
 
     for(;;){
 
+
+        int timer_ms = 0;
+
         while (gpio_get(BUTTON_GPIO_PIN)){
 
             switch (mode){
@@ -61,16 +64,35 @@ int main(){
             case 3: //Brightness 100%
                 pwm_set_chan_level(slice_number, PWM_CHAN_A, fixed_brightness(100, pwm_wrap_point));
                 break;
+
+            case 4: //Breathing normal
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, breathing(timer_ms, 1, pwm_wrap_point));
+                break;
             
+            case 5: //Breathing slow
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, breathing(timer_ms, 0.2f, pwm_wrap_point));
+                break;
+
+            case 6: //Strobe
+                pwm_set_chan_level(slice_number, PWM_CHAN_A, strobe(timer_ms, 50, pwm_wrap_point));
+                break;
+
             default:
                 break;
 
-                sleep_ms(10);
+            }
+
+            sleep_ms(1);
+            if(timer_ms<5000){
+                timer_ms++;
+            }
+            else{
+                timer_ms = 0;
             }
 
         }
         
-        if(mode<3){
+        if(mode<6){
             mode++;
         }
         else{
