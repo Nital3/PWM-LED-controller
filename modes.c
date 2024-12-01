@@ -5,7 +5,38 @@
 #include "hardware/pwm.h"
 #include "modes.h"
 
-static const double pi = 3.14159;
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif  
+
+
+/** \brief Handles interupt button advancing mode to next one and resets the timer
+*
+*
+* \param current_mode_pointer pointer to variable holding current mode id
+* \param timer_pointer pointer to timer used in different modes
+*/
+void switch_mode(int* current_mode_pointer, int* timer_pointer){
+
+    //advance mode by one on interupt, wrap on 6
+    if((*current_mode_pointer)<6){
+        (*current_mode_pointer)++;
+    }
+    else{
+        (*current_mode_pointer) = 0;
+    }
+
+
+    //resets timer
+    (*timer_pointer) = 0;
+
+}
+
+
+
+
+
+
 
 
 /** \brief Returns channel level for given brightness and pwm wrap point
@@ -30,7 +61,7 @@ uint16_t fixed_brightness(int brightness_percentage, int wrap_point){
 uint16_t breathing(int timer_ms, double speed_multiplier, int wrap_point){
 
     //convert 1000ms scale into 2pi scale
-    double t = ((timer_ms*2*pi)/1000)*speed_multiplier;
+    double t = ((timer_ms*2*M_PI)/1000)*speed_multiplier;
 
     //calculate channel level
     double y = ((sin(t)+1)*wrap_point)/2;
